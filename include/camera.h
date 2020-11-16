@@ -58,9 +58,8 @@ public:
     int j = pixel_index[1];
     colors[j * number_pixels[0] + i] = color;
   }
-  // void Focus_Camera(double focal_distance, double aspect_ratio,
-  //                  double field_of_view);
-  //
+  void Focus_Camera(double focal_distance, double aspect_ratio,
+                    double field_of_view);
 };
 
 void Camera::Position_And_Aim_Camera(const vec3 &position_input,
@@ -92,11 +91,11 @@ vec3 Camera::World_Position(const ivec2 &pixel_index) {
 }
 
 // Maybe use later
-// void Camera::Focus_Camera(double focal_distance, double aspect_ratio,
-//                          double field_of_view) {
-//  film_position = position + look_vector * focal_distance;
-//  double width = 2.0 * focal_distance * tan(.5 * field_of_view);
-//  double height = width / aspect_ratio;
-//  image_size = vec2(width, height);
-//}
+void Camera::Focus_Camera(double focal_distance, double aspect_ratio,
+                          double field_of_view) {
+  film_position = position + look_vector * focal_distance;
+  double width = 2.0 * focal_distance * tan(.5 * field_of_view);
+  double height = width / aspect_ratio;
+  image_size = vec2(width, height);
+}
 #endif

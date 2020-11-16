@@ -7,7 +7,7 @@ class Sphere : public Object {
 public:
   Sphere(){};
   Sphere(vec3 c, double r, vec3 clr) : center(c), radius(r) { color = clr; }
-  virtual Hit Intersection(const Ray &ray) const override;
+  virtual Hit Intersection(const Ray &ray) const;
   vec3 center;
   double radius;
 };

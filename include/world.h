@@ -1,6 +1,7 @@
 #ifndef __WORLD_H__
 #define __WORLD_H__
 
+#include <algorithm>
 #include <vector>
 
 #include "camera.h"
@@ -40,7 +41,7 @@ void World::Render() {
 
 void World::RenderSinglePixel(const ivec2 &index) {
   vec3 endpoint = camera.position;
-  vec3 direction = camera.World_Position(index);
+  vec3 direction = camera.World_Position(index) - endpoint;
   Ray ray = Ray(endpoint, direction);
 
   vec3 color = CastRay(ray);
@@ -50,18 +51,21 @@ void World::RenderSinglePixel(const ivec2 &index) {
 }
 
 vec3 World::CastRay(const Ray &ray) {
+  // std::cout << "Current ray start from " << ray.endPoint << " to "
+  //          << ray.direction << std::endl;
   vec3 color = background_color;
   Hit closest = {nullptr, __DBL_MAX__, vec3(0.0, 0.0, 0.0)};
   Hit currentHit;
   for (size_t i = 0; i < object_list.size(); i++) {
     currentHit = object_list[i]->Intersection(ray);
-    if (currentHit.object == nullptr)
+    if (currentHit.dist == __DBL_MAX__)
       continue;
     if (currentHit.dist < closest.dist)
       closest = currentHit;
   }
-  if (closest.object == nullptr)
+  if (closest.dist == __DBL_MAX__) {
     return background_color;
+  }
   return closest.object->color;
 }
 

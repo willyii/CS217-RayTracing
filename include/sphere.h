@@ -7,19 +7,19 @@ class Sphere : public Object {
 public:
   Sphere(){};
   Sphere(vec3 c, double r, vec3 clr) : center(c), radius(r) { color = clr; }
-  virtual Hit Intersection(const Ray &ray) const override;
+  virtual Hit Intersection(const Ray &ray) const;
   vec3 center;
   double radius;
 };
 
 Hit Sphere::Intersection(const Ray &ray) const {
-  Hit ret = {nullptr, 0.0, vec3(0.0, 0.0, 0.0)};
-  vec3 oc = ray.endPoint - center;
+  Hit ret = {this, __DBL_MAX__, vec3(0.0, 0.0, 0.0)};
+  vec3 oc = ray.endPoint - this->center;
   double a = dot(ray.direction, ray.direction);
   double b = dot(oc, ray.direction);
   double c = dot(oc, oc) - radius * radius;
   double discriminant = b * b - a * c;
-  if (discriminant > 0) {
+  if (discriminant >= 0) {
     /* Small root */
     double tmp = (-b - sqrt(discriminant)) / a;
     if (tmp > 0) {

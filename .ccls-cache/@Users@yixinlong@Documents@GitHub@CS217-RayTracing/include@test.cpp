@@ -20,9 +20,10 @@ int main() {
   double radius = 3;
   vec3 color(0.0, 0.0, 0.0);
   Sphere *s1 = new Sphere(center, radius, color);
-  world.object_list.emplace_back(s1);
+  world.object_list.push_back(s1);
 
   world.Render();
+
   /* TODO: Save Image */
   // Dump_png(world.camera.colors, 800, 600, "test.png");
 

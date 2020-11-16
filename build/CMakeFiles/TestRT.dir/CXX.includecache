@@ -25,10 +25,14 @@ object.h
 ../include/object.h
 
 ../include/util.h
-png.h
--
 cassert
 -
+fstream
+-
+iostream
+-
+camera.h
+../include/camera.h
 world.h
 ../include/world.h
 
@@ -39,6 +43,8 @@ iostream
 -
 
 ../include/world.h
+algorithm
+-
 vector
 -
 camera.h

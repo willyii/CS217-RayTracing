@@ -1,6 +1,7 @@
 .PHONY: build
 build:
 	mkdir -p build
+	mkdir -p result
 	cd build && \
 	cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 .. && \
 	make
@@ -15,4 +16,5 @@ debug:
 .PHONY: clean
 clean:
 	rm -rf build
+	rm -rf result
 
