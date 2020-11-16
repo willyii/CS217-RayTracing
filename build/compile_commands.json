@@ -1,0 +1,12 @@
+[
+{
+  "directory": "/Users/yixinlong/Documents/GitHub/CS217-RayTracing/build",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  -I/Users/yixinlong/Documents/GitHub/CS217-RayTracing/include  -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.0.sdk -mmacosx-version-min=10.15 -std=gnu++17 -o CMakeFiles/TestRT.dir/test/test.cpp.o -c /Users/yixinlong/Documents/GitHub/CS217-RayTracing/test/test.cpp",
+  "file": "/Users/yixinlong/Documents/GitHub/CS217-RayTracing/test/test.cpp"
+},
+{
+  "directory": "/Users/yixinlong/Documents/GitHub/CS217-RayTracing/build",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  -I/Users/yixinlong/Documents/GitHub/CS217-RayTracing/include  -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.0.sdk -mmacosx-version-min=10.15 -std=gnu++17 -o CMakeFiles/RayTracing.dir/main/main.cpp.o -c /Users/yixinlong/Documents/GitHub/CS217-RayTracing/main/main.cpp",
+  "file": "/Users/yixinlong/Documents/GitHub/CS217-RayTracing/main/main.cpp"
+}
+]

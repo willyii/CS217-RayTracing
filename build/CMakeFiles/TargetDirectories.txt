@@ -1,0 +1,4 @@
+/Users/yixinlong/Documents/GitHub/CS217-RayTracing/build/CMakeFiles/rebuild_cache.dir
+/Users/yixinlong/Documents/GitHub/CS217-RayTracing/build/CMakeFiles/edit_cache.dir
+/Users/yixinlong/Documents/GitHub/CS217-RayTracing/build/CMakeFiles/TestRT.dir
+/Users/yixinlong/Documents/GitHub/CS217-RayTracing/build/CMakeFiles/RayTracing.dir
