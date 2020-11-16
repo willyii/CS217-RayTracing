@@ -6,6 +6,7 @@ CMakeFiles/TestRT.dir/test/test.cpp.o
  ../include/object.h
  ../include/ray.h
  ../include/sphere.h
+ ../include/util.h
  ../include/vec.h
  ../include/world.h
  /Users/yixinlong/Documents/GitHub/CS217-RayTracing/test/test.cpp

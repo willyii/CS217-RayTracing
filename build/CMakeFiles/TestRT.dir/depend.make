@@ -5,6 +5,7 @@ CMakeFiles/TestRT.dir/test/test.cpp.o: ../include/camera.h
 CMakeFiles/TestRT.dir/test/test.cpp.o: ../include/object.h
 CMakeFiles/TestRT.dir/test/test.cpp.o: ../include/ray.h
 CMakeFiles/TestRT.dir/test/test.cpp.o: ../include/sphere.h
+CMakeFiles/TestRT.dir/test/test.cpp.o: ../include/util.h
 CMakeFiles/TestRT.dir/test/test.cpp.o: ../include/vec.h
 CMakeFiles/TestRT.dir/test/test.cpp.o: ../include/world.h
 CMakeFiles/TestRT.dir/test/test.cpp.o: ../test/test.cpp

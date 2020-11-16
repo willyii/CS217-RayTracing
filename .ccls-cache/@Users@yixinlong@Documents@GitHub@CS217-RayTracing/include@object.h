@@ -13,7 +13,10 @@ struct Hit {
 
 class Object {
 public:
+  Object(){};
+  virtual ~Object(){};
   virtual Hit Intersection(const Ray &ray) const = 0;
+  vec3 color;
 };
 
 #endif

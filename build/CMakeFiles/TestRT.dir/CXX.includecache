@@ -24,6 +24,14 @@ vec.h
 object.h
 ../include/object.h
 
+../include/util.h
+png.h
+-
+cassert
+-
+world.h
+../include/world.h
+
 ../include/vec.h
 cmath
 -
@@ -43,6 +51,8 @@ iostream
 -
 sphere.h
 /Users/yixinlong/Documents/GitHub/CS217-RayTracing/test/sphere.h
+util.h
+/Users/yixinlong/Documents/GitHub/CS217-RayTracing/test/util.h
 world.h
 /Users/yixinlong/Documents/GitHub/CS217-RayTracing/test/world.h
 
