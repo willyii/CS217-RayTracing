@@ -19,8 +19,6 @@ run the test program:
 This program will add new file named "test.jpg" in **result** fold. There will be 
 a blue sphere on the green background.
 
-![Sample TestRT](/img/sampleTestRT.png)
-
 
 ## 11.13.2020
 Set up framework
