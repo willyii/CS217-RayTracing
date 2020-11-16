@@ -16,10 +16,10 @@ run the test program:
 ./build/TestRT
 ```
 
-This program will add new file named "test.jpg" in **result** fold. The ans should like
-this.
+This program will add new file named "test.jpg" in **result** fold. There will be 
+a blue sphere on the green background.
 
-![Sample TestRT](/img/sampleTestRT.jpg)
+![Sample TestRT](/img/sampleTestRT.png)
 
 
 ## 11.13.2020
