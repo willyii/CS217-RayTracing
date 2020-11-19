@@ -23,7 +23,7 @@ int main() {
   double radius = 0.5;
   vec3 color(.2, 0.2, .8);
   Sphere *s1 = new Sphere(center, radius, color);
-  world.object_list.emplace_back(s1);
+  world.object_list.push_back(s1);
 
   world.Render();
 
