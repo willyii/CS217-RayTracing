@@ -7,9 +7,6 @@
 #include <fstream>
 #include <iostream>
 
-#include "camera.h"
-#include "world.h"
-
 typedef unsigned int Pixel;
 
 // void Dump_png(Pixel *data, int width, int height, const char *filename) {
@@ -38,6 +35,10 @@ typedef unsigned int Pixel;
 //  png_destroy_write_struct(&png_ptr, &info_ptr);
 //  fclose(file);
 //}
+
+inline vec3 From_Pixel(Pixel color) {
+  return vec3(color >> 24, (color >> 16) & 0xff, (color >> 8) & 0xff) / 255.;
+}
 
 void Dump_png(Pixel *data, int width, int height, const char *filename) {
   std::ofstream WriteFile;
