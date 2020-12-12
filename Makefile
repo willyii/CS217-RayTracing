@@ -1,20 +1,21 @@
-.PHONY: build
-build:
-	mkdir -p build
-	mkdir -p result
-	cd build && \
-	cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 .. && \
-	make
 
-.PHONY: debug
-debug:
-	mkdir -p build
-	cd build && \
-	cmake -DCMAKE_BUILD_TYPE=debug .. && \
-	make
+INC_DIR 	= include
+KER_DIR		= kernel
+SRC_DIR		= test
+NVCC        = nvcc
+NVCC_FLAGS  = -O3 -I/usr/local/cuda/include -I$(INC_DIR) -I$(KER_DIR)
+LD_FLAGS    = -lcudart -L/usr/local/cuda/lib64
+EXE	        = rayTracing
+OBJ	        = test.o 
 
-.PHONY: clean
+default: $(EXE)
+
+$(EXE): $(OBJ)
+	$(NVCC) $(OBJ) -o $(EXE) 
+
+test.o: $(SRC_DIR)/test.cpp $(INC_DIR)/sphere.h $(INC_DIR)/world.h \
+$(INC_DIR)/util.h
+	$(NVCC) -c $(SRC_DIR)/test.cpp $(NVCC_FLAGS) -o $@ 
+
 clean:
-	rm -rf build
-	rm -rf result
-
+	rm -rf *.o $(EXE)

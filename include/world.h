@@ -54,7 +54,7 @@ vec3 World::CastRay(const Ray &ray) {
   // std::cout << "Current ray start from " << ray.endPoint << " to "
   //          << ray.direction << std::endl;
   vec3 color = background_color;
-  Hit closest = {nullptr, __DBL_MAX__, vec3(0.0, 0.0, 0.0)};
+  Hit closest = {NULL, __DBL_MAX__, vec3(0.0, 0.0, 0.0)};
   Hit currentHit;
   for (size_t i = 0; i < object_list.size(); i++) {
     currentHit = object_list[i]->Intersection(ray);
