@@ -5,14 +5,14 @@
 
 class Sphere : public Object {
 public:
-  Sphere(){};
-  Sphere(vec3 c, double r, vec3 clr) : center(c), radius(r) { color = clr; }
-  virtual Hit Intersection(const Ray &ray) const;
+  __device__ Sphere(){};
+  __device__ Sphere(vec3 c, double r, vec3 clr) : center(c), radius(r) { color = clr; }
+  __device__ virtual Hit Intersection(const Ray &ray) const;
   vec3 center;
   double radius;
 };
 
-Hit Sphere::Intersection(const Ray &ray) const {
+__device__ Hit Sphere::Intersection(const Ray &ray) const {
   Hit ret = {this, __DBL_MAX__, vec3(0.0, 0.0, 0.0)};
   vec3 oc = ray.endPoint - this->center;
   double a = dot(ray.direction, ray.direction);

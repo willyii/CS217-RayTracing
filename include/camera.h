@@ -7,7 +7,7 @@
 
 typedef unsigned int Pixel;
 
-inline Pixel Pixel_Color(const vec3 &color) {
+__device__ inline Pixel Pixel_Color(const vec3 &color) {
   unsigned int r = std::min(color[0], 1.0) * 255;
   unsigned int g = std::min(color[1], 1.0) * 255;
   unsigned int b = std::min(color[2], 1.0) * 255;
@@ -34,32 +34,32 @@ public:
   ivec2 number_pixels; // number of pixels: x and y direction
   Pixel *colors;       // Pixel data; row-major order
 
-  Camera() : colors(0){};
-  ~Camera() { delete[] colors; }
+  __device__ Camera() : colors(0){};
+  __device__ ~Camera() { delete[] colors; }
 
   // Used for setting up camera parameters
-  void Position_And_Aim_Camera(const vec3 &position_input,
+  __device__ void Position_And_Aim_Camera(const vec3 &position_input,
                                const vec3 &look_at_point,
                                const vec3 &pseudo_up_vector);
-  void Set_Resolution(const ivec2 &number_pixels_input);
+  __device__ void Set_Resolution(const ivec2 &number_pixels_input);
 
   // Used for determining the where pixels are
-  vec3 World_Position(const ivec2 &pixel_index);
-  vec2 Cell_Center(const ivec2 &index) const {
+  __device__ vec3 World_Position(const ivec2 &pixel_index);
+  __device__ vec2 Cell_Center(const ivec2 &index) const {
     return min + (vec2(index) + vec2(.5, .5)) * pixel_size;
   }
 
   // Call to set the color of a pixel
-  void Set_Pixel(const ivec2 &pixel_index, const Pixel &color) {
+  __device__ void Set_Pixel(const ivec2 &pixel_index, const Pixel &color) {
     int i = pixel_index[0];
     int j = pixel_index[1];
     colors[j * number_pixels[0] + i] = color;
   }
-  void Focus_Camera(double focal_distance, double aspect_ratio,
+  __device__ void Focus_Camera(double focal_distance, double aspect_ratio,
                     double field_of_view);
 };
 
-void Camera::Position_And_Aim_Camera(const vec3 &position_input,
+__device__ void Camera::Position_And_Aim_Camera(const vec3 &position_input,
                                      const vec3 &look_at_point,
                                      const vec3 &pseudo_up_vector) {
   position = position_input;
@@ -68,7 +68,7 @@ void Camera::Position_And_Aim_Camera(const vec3 &position_input,
   vertical_vector = cross(horizontal_vector, look_vector).normalized();
 }
 
-void Camera::Set_Resolution(const ivec2 &number_pixels_input) {
+__device__ void Camera::Set_Resolution(const ivec2 &number_pixels_input) {
   number_pixels = number_pixels_input;
   if (colors)
     delete[] colors;
@@ -79,7 +79,7 @@ void Camera::Set_Resolution(const ivec2 &number_pixels_input) {
 }
 
 // Find the world position of the input pixel
-vec3 Camera::World_Position(const ivec2 &pixel_index) {
+__device__ vec3 Camera::World_Position(const ivec2 &pixel_index) {
   vec3 result;
   vec2 cell_center = Cell_Center(pixel_index);
   result = film_position + cell_center[0] * horizontal_vector +
@@ -88,7 +88,7 @@ vec3 Camera::World_Position(const ivec2 &pixel_index) {
 }
 
 // Maybe use later
-void Camera::Focus_Camera(double focal_distance, double aspect_ratio,
+__device__ void Camera::Focus_Camera(double focal_distance, double aspect_ratio,
                           double field_of_view) {
   film_position = position + look_vector * focal_distance;
   double width = 2.0 * focal_distance * tan(.5 * field_of_view);
