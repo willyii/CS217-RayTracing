@@ -11,35 +11,27 @@ class Ray;
 
 class World {
 public:
-  World();
-  ~World();
+    __device__ World();
+    __device__ ~World();
 
-  Camera camera;
-  std::vector<Object *> object_list;
-  vec3 background_color;
+    Camera camera;
+    std::vector<Object *> object_list;
+    vec3 background_color;
+    __device__ void Render();
 
-  void Render();
+    __device__ void RenderSinglePixel(const ivec2 &index);
 
-  void RenderSinglePixel(const ivec2 &index);
-
-  vec3 CastRay(const Ray &ray);
+    __device__ vec3 CastRay(const Ray &ray);
 };
 
-World::World() : background_color(0) {}
+__device__ World::World() : background_color(0) {}
 
-World::~World() {
+__device__ World::~World() {
   for (size_t i = 0; i < object_list.size(); i++)
     delete object_list[i];
 }
 
-void World::Render() {
-  for (int j = 0; j < camera.number_pixels[1]; j++)
-    for (int i = 0; i < camera.number_pixels[0]; i++)
-      RenderSinglePixel(ivec2(i, j));
-  return;
-}
-
-void World::RenderSinglePixel(const ivec2 &index) {
+__device__ void World::RenderSinglePixel(const ivec2 &index) {
   vec3 endpoint = camera.position;
   vec3 direction = camera.World_Position(index) - endpoint;
   Ray ray = Ray(endpoint, direction);
@@ -50,7 +42,7 @@ void World::RenderSinglePixel(const ivec2 &index) {
   return;
 }
 
-vec3 World::CastRay(const Ray &ray) {
+__device__ World::CastRay(const Ray &ray) {
   // std::cout << "Current ray start from " << ray.endPoint << " to "
   //          << ray.direction << std::endl;
   vec3 color = background_color;
