@@ -2,32 +2,25 @@
 Project for CS217 GPU architecture. A basic cuda version raytracing program
 
 ## How to run
-Please make sure [CMake](https://cmake.org/) is installed on your machine. 
 
 Enter the root of this project, using following commands to compile:
 ```bash
 make clean
-make build
+make
 ```
 
-After compile, you will have two executable in **buil** fold. Using this command to 
+After compile, you will have one executable **rayTracing**. Using this command to 
 run the test program:
 ```bash
-./build/TestRT
+./rayTracing
 ```
 
-This program will add new file named "test.jpg" in **result** fold. There will be 
-a blue sphere on the green background.
+This program will add new file named "test.png" in **result** fold.
 
-
-## 11.13.2020
-Set up framework
-
-## 11.14.2020
-Update camera.h and ray.h
-
-## 11.15.2020
-Finished basic ray tracing program. See usage 
+## TODO
+- Object and sphere class that can be used in GPU and CPU
+- Shader function
+- Parse function 
 
 ## Reference 
 https://in1weekend.blogspot.com/2016/01/ray-tracing-in-one-weekend.html
