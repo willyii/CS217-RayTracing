@@ -13,9 +13,9 @@ default: $(EXE)
 $(EXE): $(OBJ)
 	$(NVCC) $(OBJ) -o $(EXE) 
 
-test.o: $(SRC_DIR)/test.cpp $(INC_DIR)/sphere.h $(INC_DIR)/world.h \
+test.o: $(SRC_DIR)/test.cu $(INC_DIR)/sphere.h $(INC_DIR)/world.h \
 $(INC_DIR)/util.h
-	$(NVCC) -c $(SRC_DIR)/test.cpp $(NVCC_FLAGS) -o $@ 
+	$(NVCC) -c $(SRC_DIR)/test.cu $(NVCC_FLAGS) -o $@ 
 
 clean:
 	rm -rf *.o $(EXE)
