@@ -9,6 +9,11 @@
 
 class Ray;
 
+__global__
+void Render(Camera *camera, Object *obj, int N, int *pic, int width , int height){
+  int idx = blockDim.x * blockIdx.x + threadIdx.x;
+}
+
 class World {
 public:
     __device__ World();

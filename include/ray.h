@@ -10,8 +10,8 @@ public:
   vec3 direction; // direction of the ray - unit vector
 
   __device__ Ray() : endPoint(0, 0, 0), direction(0, 0, 1) {}
-  __device__ Ray(const vec3 &endpoint_input, const vec3 &direction_input)
-      : endPoint(endpoint_input), direction(direction_input.normalized()) {}
+  __device__ Ray(const vec3 *endpoint_input, const vec3 *direction_input)
+      : endPoint(*endpoint_input), direction((*direction_input).normalized()) {}
 
   __device__ vec3 point(double t) const { return endPoint + direction * t; }
 };

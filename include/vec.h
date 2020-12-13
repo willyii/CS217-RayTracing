@@ -11,7 +11,8 @@ template <class T, int n>
 struct vec;
 
 template <class T, int n>
-__device__ __host__ T dot(const vec<T, n> &u, const vec<T, n> &v);
+__device__ __host__ 
+T dot(const vec<T, n> &u, const vec<T, n> &v);
 
 template <class T, int n>
 struct vec
