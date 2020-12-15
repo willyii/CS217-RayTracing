@@ -8,6 +8,8 @@
 #include "object.h"
 
 class Ray;
+class Shader;
+class Light;
 
 class World {
 public:
@@ -15,21 +17,32 @@ public:
   ~World();
 
   Camera camera;
+  Shader *background_shader;
   std::vector<Object *> object_list;
+  std::vector<Light *> lights;
   vec3 background_color;
+  vec3 ambient_color;
+  double ambient_intensity;
 
+  bool enable_shadows;
+  int recursion_depth_limits;
   void Render();
 
   void RenderSinglePixel(const ivec2 &index);
-
-  vec3 CastRay(const Ray &ray);
+  Hit Closest_Intersection(const Ray &ray);
+  vec3 CastRay(const Ray &ray,int recursion_depth);
 };
 
-World::World() : background_color(0) {}
+World::World() 
+  : background_color(0),ambient_intensity(0),enable_shadows(true),
+  recursion_depth_limits(3)
+  {}
 
 World::~World() {
-  for (size_t i = 0; i < object_list.size(); i++)
-    delete object_list[i];
+  
+  delete background_shader;
+  for (size_t i = 0; i < object_list.size(); i++) delete object_list[i];
+  for (size_t i = 0; i < lights.size(); i++) delete lights[i];
 }
 
 void World::Render() {
@@ -44,29 +57,41 @@ void World::RenderSinglePixel(const ivec2 &index) {
   vec3 direction = camera.World_Position(index) - endpoint;
   Ray ray = Ray(endpoint, direction);
 
-  vec3 color = CastRay(ray);
+  vec3 color = CastRay(ray,3);
 
   camera.Set_Pixel(index, Pixel_Color(color));
   return;
 }
-
-vec3 World::CastRay(const Ray &ray) {
-  // std::cout << "Current ray start from " << ray.endPoint << " to "
-  //          << ray.direction << std::endl;
-  vec3 color = background_color;
-  Hit closest = {NULL, __DBL_MAX__, vec3(0.0, 0.0, 0.0)};
+Hit World::Closest_Intersection(const Ray &ray)
+{
   Hit currentHit;
-  for (size_t i = 0; i < object_list.size(); i++) {
+  Hit closest = {NULL, __DBL_MAX__, vec3(0.0, 0.0, 0.0)};
+  for (size_t i = 0; i < object_list.size(); i++) 
+  {
     currentHit = object_list[i]->Intersection(ray);
     if (currentHit.dist == __DBL_MAX__)
       continue;
     if (currentHit.dist < closest.dist)
       closest = currentHit;
   }
-  if (closest.dist == __DBL_MAX__) {
-    return background_color;
+  return closest;
+}
+vec3 World::CastRay(const Ray &ray,int recursion_depth) {
+  // std::cout << "Current ray start from " << ray.endPoint << " to "
+  //          << ray.direction << std::endl;
+  vec3 color = background_color;
+  Hit closest=Closest_Intersection(ray);
+  vec3 point;
+  vec3 normal;
+  
+  if (closest.dist != __DBL_MAX__) 
+  {
+    point=ray.point(closest.dist);
+    normal=closest.object->Normal(point);
+    color=closest.object->material_shader->Shade_Surface(ray,point,normal,recursion_depth);
   }
-  return closest.object->color;
+  else color=background_color;
+  return color;
 }
 
 #endif
