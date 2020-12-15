@@ -1,52 +1,72 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "vec.h"
-#include "testKernel.h"
+#include "kernel.h"
+#include "util.h"
 
+// limited version of checkCudaErrors from helper_cuda.h in CUDA examples
+#define checkCudaErrors(val) check_cuda( (val), #val, __FILE__, __LINE__ )
 
+/* Check the error of cuda API */
+void check_cuda(cudaError_t result, char const *const func, const char *const file, int const line) {
+    if (result) {
+        std::cerr << "CUDA error = " << static_cast<unsigned int>(result) << " at " <<
+            file << ":" << line << " '" << func << "' \n";
+        // Make sure we call CUDA Device Reset before exiting
+        cudaDeviceReset();
+        exit(99);
+    }
+}
 
 
 int main(int argc, char *argv[]) {
 
-  testVec3();
+    /*  Debug thing */
+    vec3 *testVec;
+    checkCudaErrors(cudaMallocManaged((void **)&testVec, sizeof(vec3)));
+    checkCudaErrors(cudaDeviceSynchronize());
 
-  testRay();
+    int N       = 2; // number of objects
+    int width   = 640;
+    int height  = 480;
+    /* Camera parameter   */
+    vec3 pos    = vec3(0.0, 0.0, 0.0);
+    vec3 look   = vec3(0.0, 0.0, 2.0);
+    vec3 up     = vec3(0.0, 1.0, 0.0);
 
-  testCamera();
-
-  testRender();
-
-  
-
-
+    /* Initialize camera  */
+    Camera **camera;
+    checkCudaErrors(cudaMalloc((void **)&camera, sizeof(Camera *)));
+    creatCamera<<<1,1>>>(camera, pos, look, up, width, height);
+    checkCudaErrors(cudaDeviceSynchronize());
 
 
-  // /* Set Camera */
-  // int width = 640;
-  // int height = 480;
-  // World world = World();
-  // vec3 postion(0.0, 0.0, 0.0);
-  // vec3 look_at_point(0.0, 0.0, -1.0);
-  // vec3 pseudo_up_vector(0.0, 1.0, 0.0);
-  // world.camera.Position_And_Aim_Camera(postion, look_at_point,
-  //                                      pseudo_up_vector);
-  // world.camera.Focus_Camera(1.0, (double)width / height, 30.0 * (pi / 180));
-  // world.camera.Set_Resolution(ivec2(width, height));
-  // world.background_color = vec3(0.0, 1.0, 0.0);
+    /* Initialize objects */
+    Object **objs;
+    checkCudaErrors(cudaMalloc((void **)&objs, sizeof(Object *) * N));
+    addSphere<<<1,1>>>(objs); // TODO: make it flexibale
+    checkCudaErrors(cudaDeviceSynchronize());
 
-  // /* TODO: Set Objects */
-  // vec3 center(0.0, 0.0, -10.0);
-  // double radius = 0.5;
-  // vec3 color(.2, 0.2, .8);
-  // Sphere *s1 = new Sphere(center, radius, color);
-  // world.object_list.push_back(s1);
+    /* Initialize colors */
+    ivec3 *colors;
+    checkCudaErrors(cudaMallocManaged((void **)&colors, sizeof(ivec3)*height*width));
+    checkCudaErrors(cudaDeviceSynchronize());
 
-  // world.Render();
 
-  // /* TODO: Save Image */
-  // Dump_png(world.camera.colors, width, height, "./result/test.jpg");
+    /* Render            */
+    int tx = 8;
+    int ty = 8;
+    dim3 blocks(width/tx+1, height/ty +1);
+    dim3 threads(tx, ty);
+    render<<<blocks, threads>>>(objs, N, colors, width, height, camera, testVec);
+    checkCudaErrors(cudaDeviceSynchronize());
 
-  // ivec2 *resulotuion = 
+    // Save img
+    Dump_png(colors, width, height, "./result/test.png");
+    
+    /* Print debug info */
+    printf("Color of first pixel: %d, %d, %d\n", colors[0][0], colors[0][1], colors[0][2]);
+    printf("Test Vec3 : %f, %f, %f\n", (*testVec)[0], (*testVec)[1], (*testVec)[2]);
+
 
   return 0;
 }

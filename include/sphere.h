@@ -5,15 +5,14 @@
 
 class Sphere : public Object {
 public:
-  __device__ Sphere(){};
-  __device__ Sphere(vec3 c, double r, vec3 clr) : center(c), radius(r) { color = clr; }
-  __device__ virtual Hit Intersection(const Ray &ray) const;
+  __device__ __host__ Sphere(){};
+  __device__ __host__ Sphere(vec3 c, double r, vec3 clr) : center(c), radius(r) { color = clr; }
+  __device__ __host__ virtual void Intersection(Ray &ray, Hit *hit) const;
   vec3 center;
   double radius;
 };
 
-__device__ Hit Sphere::Intersection(const Ray &ray) const {
-  Hit ret = {this, __DBL_MAX__, vec3(0.0, 0.0, 0.0)};
+__device__ __host__ void Sphere::Intersection(Ray &ray, Hit *hit) const {
   vec3 oc = ray.endPoint - this->center;
   double a = dot(ray.direction, ray.direction);
   double b = dot(oc, ray.direction);
@@ -21,23 +20,23 @@ __device__ Hit Sphere::Intersection(const Ray &ray) const {
   double discriminant = b * b - a * c;
   if (discriminant >= 0) {
     /* Small root */
-    double tmp = (-b - sqrt(discriminant)) / a;
-    if (tmp > 0) {
-      ret.object = this;
-      ret.dist = tmp;
-      ret.normal = (ray.point(tmp) - center) / radius;
-      return ret;
+    double d = (-b - sqrt(discriminant)) / a;
+    if (d > 0 && d< hit->dist) {
+      hit->object = this;
+      hit->dist   = d;
+      hit->normal = vec3(0.0, 0.0, 0.0); // TODO: setup normal
+      return;
     }
     /* Large root */
-    tmp = (-b + sqrt(discriminant)) / a;
-    if (tmp > 0) {
-      ret.object = this;
-      ret.dist = tmp;
-      ret.normal = (ray.point(tmp) - center) / radius;
-      return ret;
+    d = (-b + sqrt(discriminant)) / a;
+    if (d > 0 && d< hit->dist) {
+      hit->object = this;
+      hit->dist   = d;
+      hit->normal = vec3(0.0, 0.0, 0.0); // TODO: setup normal
+      return;
     }
   }
-  return ret;
+  return;
 }
 
 #endif

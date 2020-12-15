@@ -1,4 +1,3 @@
-
 INC_DIR 	= include
 KER_DIR		= kernel
 SRC_DIR		= test
@@ -13,12 +12,8 @@ default: $(EXE)
 $(EXE): $(OBJ)
 	$(NVCC) $(OBJ) -o $(EXE) 
 
-# test.o: $(SRC_DIR)/test.cu $(INC_DIR)/sphere.h $(INC_DIR)/world.h \
-# $(INC_DIR)/util.h
-# 	$(NVCC) -c $(SRC_DIR)/test.cu $(NVCC_FLAGS) -o $@ 
-
-test.o: $(SRC_DIR)/test.cu $(INC_DIR)/vec.h
-	$(NVCC) -c $(SRC_DIR)/test.cu $(NVCC_FLAGS) -o $@ 
+test.o: $(SRC_DIR)/test.cu
+	$(NVCC) -c -o $@ $(SRC_DIR)/test.cu $(NVCC_FLAGS)
 
 clean:
 	rm -rf *.o $(EXE)

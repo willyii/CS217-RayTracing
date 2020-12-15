@@ -18,7 +18,6 @@ run the test program:
 This program will add new file named "test.png" in **result** fold.
 
 ## TODO
-- Object and sphere class that can be used in GPU and CPU
 - Shader function
 - Parse function 
 

@@ -28,9 +28,9 @@ public:
 
   // Used for setting up camera parameters
   __device__ __host__
-  void Position_And_Aim_Camera(const vec3 *position_input,
-                               const vec3 *look_at_point,
-                               const vec3 *pseudo_up_vector);
+  void Position_And_Aim_Camera(const vec3 &position_input,
+                               const vec3 &look_at_point,
+                               const vec3 &pseudo_up_vector);
 
   __device__ __host__
   void Focus_Camera(double focal_distance, double aspect_ratio,
@@ -41,21 +41,21 @@ public:
 
   // Used for determining the where pixels are
   __device__ __host__
-  vec3 World_Position(const ivec2 *pixel_index);
+  vec3 World_Position(const ivec2 pixel_index);
 
   __device__ __host__
-  vec2 Cell_Center(const ivec2 *index) const {
-    return min + (vec2(*index) + vec2(.5, .5)) * pixel_size;
+  vec2 Cell_Center(const ivec2 index) const {
+    return min + (vec2(index) + vec2(.5, .5)) * pixel_size;
   }
 };
 
 __device__ __host__
-void Camera::Position_And_Aim_Camera(const vec3 *position_input,
-                                     const vec3 *look_at_point,
-                                     const vec3 *pseudo_up_vector) {
-  position = *position_input;
-  look_vector = ((*look_at_point) - position).normalized();
-  horizontal_vector = cross(look_vector, *pseudo_up_vector).normalized();
+void Camera::Position_And_Aim_Camera(const vec3 &position_input,
+                                     const vec3 &look_at_point,
+                                     const vec3 &pseudo_up_vector) {
+  position = position_input;
+  look_vector = ((look_at_point) - position).normalized();
+  horizontal_vector = cross(look_vector, pseudo_up_vector).normalized();
   vertical_vector = cross(horizontal_vector, look_vector).normalized();
 }
 
@@ -69,7 +69,7 @@ void Camera::Set_Resolution(const int width, const int height) {
 
 // Find the world position of the input pixel
 __device__ __host__
-vec3 Camera::World_Position(const ivec2 *pixel_index) {
+vec3 Camera::World_Position(const ivec2 pixel_index) {
   vec3 result;
   vec2 cell_center = Cell_Center(pixel_index);
   result = film_position + cell_center[0] * horizontal_vector +

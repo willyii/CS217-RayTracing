@@ -1,6 +1,7 @@
 #include "camera.h"
 #include "ray.h"
 #include "util.h"
+#include "sphere.h"
 #include <assert.h>
 
 __global__
@@ -223,5 +224,66 @@ void testRender() {
     cudaFree(colors);
 
     printf("\n Render test pass, pls check resule/test.png\n");
+    printf("===================\n");
+}
+
+__global__ 
+void testSphereKernel(Object *sphere, ivec3 *color){
+    int idx = threadIdx.x + blockIdx.x * blockDim.x;
+
+    // if(idx == 0){
+        vec3 rpos(0.0, 0.0, 0.0), rdir(0.0, 0.0, 1.0);
+        Ray ray(&rpos, &rdir);
+        double dist = sphere->Intersection(ray); 
+        if(dist != __DBL_MAX__){
+            (*color)[0] = int(100 * (*sphere).color[0]);
+            (*color)[1] = int(100 * (*sphere).color[1]);
+            (*color)[2] = int(100 * (*sphere).color[2]);
+        }
+    // }
+    return;
+}
+
+void testSphere(){
+    cudaError_t cuda_ret;
+    printf("\n Test Sphere on GPU... \n");
+
+    /* Camera parameters */
+    Sphere *sphere;
+    ivec3 *color;
+    
+    /*Malloc memory and set up for camer */
+    cuda_ret = cudaMallocManaged(&sphere, sizeof(Sphere));
+    cuda_ret = cudaMallocManaged(&color, sizeof(ivec3));
+    if(cuda_ret != cudaSuccess){
+        printf("Unable to malloc memory for parameters\n");
+        cudaFree(sphere);
+        cudaFree(color);
+        return;
+    }
+    vec3 pos(0.0, 0.0, 0.0);
+    double radius = 3.0;
+    vec3 c(0.62, 0.41, 0.32);
+    *sphere = Sphere(pos, radius, c);
+
+    testSphereKernel<<<222, 33>>>(sphere, color);
+    cuda_ret = cudaDeviceSynchronize();
+    if(cuda_ret != cudaSuccess){
+        printf("Synchronize failed \n");
+        cudaFree(color);
+        cudaFree(sphere);
+        return;
+    }
+
+    assert(
+            (*color)[0] == int(c[0]*100) &&
+            (*color)[1] == int(c[1]*100) &&
+            (*color)[2] == int(c[2]*100)
+            );
+
+    cudaFree(color);
+    cudaFree(sphere);
+
+    printf("\n Sphere test pass\n");
     printf("===================\n");
 }

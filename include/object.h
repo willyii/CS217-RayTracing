@@ -3,8 +3,6 @@
 
 #include "ray.h"
 
-class Object;
-
 struct Hit {
   const Object *object;
   double dist;
@@ -13,9 +11,9 @@ struct Hit {
 
 class Object {
 public:
-  __device__  Object(){};
-  __device__ virtual ~Object(){};
-  __device__ virtual Hit Intersection(const Ray &ray) const = 0;
+  __device__ __host__ Object(){};
+  __device__ __host__ ~Object(){};
+  __device__ __host__ virtual void Intersection(Ray &ray, Hit *hit) const = 0;
   vec3 color;
 };
 
