@@ -8,6 +8,7 @@ public:
   Sphere(){};
   Sphere(vec3 c, double r, vec3 clr) : center(c), radius(r) { color = clr; }
   virtual Hit Intersection(const Ray &ray) const;
+  virtual vec3 Normal(const vec3& point) const;
   vec3 center;
   double radius;
 };
@@ -38,6 +39,13 @@ Hit Sphere::Intersection(const Ray &ray) const {
     }
   }
   return ret;
+}
+
+vec3 Sphere::Normal(const vec3& point) const
+{
+  vec3 normal;
+  normal=point-center;
+  return normal.normalized();
 }
 
 #endif
