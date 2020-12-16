@@ -24,11 +24,11 @@ public:
     {}
 
     virtual vec3 Shade_Surface(const Ray& ray,const vec3& intersection_point,
-        const vec3& normal,int recursion_depth) const override;
+        const vec3& normal) const override;
 };
 
 vec3 Phong_Shader::
-Shade_Surface(const Ray& ray,const vec3& intersection_point,const vec3& normal,int recursion_depth) const
+Shade_Surface(const Ray& ray,const vec3& intersection_point,const vec3& normal) const
 {
     vec3 color={0,0,0};
     vec3 light_endpoint=intersection_point;
