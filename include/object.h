@@ -3,10 +3,6 @@
 
 #include "ray.h"
 
-<<<<<<< HEAD
-
-=======
->>>>>>> cuda
 struct Hit {
   const Object *object;
   double dist;
@@ -16,8 +12,6 @@ class Shader;
 
 class Object {
 public:
-<<<<<<< HEAD
-=======
   __device__  Object(){};
   __device__  ~Object(){};
   __device__  virtual void Intersection(Ray &ray, Hit &hit) const = 0;
@@ -25,7 +19,6 @@ public:
 
   Shader *shader;
   static const double small_t = 1e-4;
->>>>>>> cuda
 };
 
 #endif

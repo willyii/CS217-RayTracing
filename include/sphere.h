@@ -5,13 +5,10 @@
 
 class Sphere : public Object {
 public:
-<<<<<<< HEAD
-=======
   __device__  Sphere(vec3 c, double r, Shader **shader_list, int idx ) 
   : center(c), radius(r) { shader = shader_list[idx];}
   __device__  virtual void Intersection(Ray &ray, Hit &hit) const;
   __device__  virtual vec3 Norm(vec3 &point) const;
->>>>>>> cuda
   vec3 center;
   double radius;
 };
@@ -24,8 +21,6 @@ __device__  void Sphere::Intersection(Ray &ray, Hit &hit) const {
   double discriminant = b * b - a * c;
   if (discriminant >= 0) {
     /* Small root */
-<<<<<<< HEAD
-=======
     double d = (-b - sqrt(discriminant)) / a;
     if (d > small_t && d< hit.dist) {
       hit.object = this;
@@ -38,18 +33,14 @@ __device__  void Sphere::Intersection(Ray &ray, Hit &hit) const {
       hit.object = this;
       hit.dist   = d;
       return;
->>>>>>> cuda
     }
   }
   return;
 }
 
-<<<<<<< HEAD
-=======
 __device__  vec3 Sphere::Norm(vec3 &point) const {
   return (point- center).normalized();
 }
 
 
->>>>>>> cuda
 #endif

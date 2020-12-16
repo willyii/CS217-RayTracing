@@ -1,17 +1,12 @@
 #ifndef __SHADER_H__
 #define __SHADER_H__
 
-<<<<<<< HEAD
-=======
 #include "ray.h"
 #include "world.h"
->>>>>>> cuda
 
 class Shader
 {
 public:
-<<<<<<< HEAD
-=======
     __device__ 
     Shader()
     {}
@@ -26,4 +21,3 @@ public:
 
 };
 #endif
->>>>>>> cuda

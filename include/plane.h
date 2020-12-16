@@ -1,8 +1,6 @@
 #ifndef __PLANE_H__
 #define __PLANE_H__
 
-<<<<<<< HEAD
-=======
 class Plane: public Object{
 
 public:
@@ -31,4 +29,3 @@ void Plane::Intersection(Ray &ray, Hit &hit) const {
 
 
 #endif
->>>>>>> cuda

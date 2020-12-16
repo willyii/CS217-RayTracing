@@ -5,8 +5,6 @@
 #include "object.h"
 #include "light.h"
 
-<<<<<<< HEAD
-=======
 
 class World {
 public:
@@ -16,13 +14,10 @@ public:
 
   __device__
   ~World();
->>>>>>> cuda
 
   __device__
   void Closest_Intersection(Ray ray, Hit &hit);
 
-<<<<<<< HEAD
-=======
   Camera **camera;
   Object **object_list;
   Light  **light_list;
@@ -44,7 +39,6 @@ void World::Closest_Intersection(Ray ray, Hit &hit){
     for(int i=0;i<num_objs;i++){
         object_list[i]->Intersection(ray, hit);
     }
->>>>>>> cuda
 }
 
 #endif
