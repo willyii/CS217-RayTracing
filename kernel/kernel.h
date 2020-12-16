@@ -3,6 +3,7 @@
 #include "point_light.h"
 #include "world.h"
 #include "phong.h"
+#include "plane.h"
 
 
 
@@ -10,8 +11,9 @@
 __global__ 
 void addSphere(Object **objs){
     if (threadIdx.x == 0 && blockIdx.x == 0) {
-        *(objs) = new Sphere(vec3(1, 0, 0), 0.5, vec3(1, 0, 0));
-        *(objs + 1) = new Sphere(vec3(0.0, 0.0, 1.0), 0.5, vec3(0.2, 0.2, 0.8));
+        *(objs) = new Sphere(vec3(1, 0, 0), 0.5);
+        *(objs + 1) = new Sphere(vec3(0.0, 0.0, 1.0), 0.5);
+        *(objs + 2) = new Plane(vec3(0,-2, 0), vec3(0,1,0));
     }
 }
 
@@ -42,7 +44,6 @@ void createWorld(World **world, Camera **camera, Object **objs, int N_objs, Ligh
                 vec3 ambient, int intense, vec3 *testVec){
     if (threadIdx.x == 0 && blockIdx.x == 0) {
         *(world) = new World(camera, objs, N_objs, lights, N_lights, ambient, 1);
-        *testVec  = world[0]->object_list[0]->color;
     }
 }
 
@@ -86,7 +87,7 @@ void render(Shader **shader, World **world,  ivec3 *colors, int width, int heigh
 
     /* Cast Ray and Set color */
     (*world)->Closest_Intersection(ray, result);
-    if(result.dist < __DBL_MAX__ && result.dist >= 1e-4){ // hit something
+    if(result.dist < __DBL_MAX__ ){ // hit something
         vec3 point = ray.point(result.dist);
         dcolor = (*shader)->Shade_Surface(ray, point, result.object->Norm(point), world );
         if(i == 309 && j == 196) (*testVec) = dcolor;

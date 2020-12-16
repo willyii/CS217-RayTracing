@@ -49,7 +49,7 @@ int main(int argc, char *argv[]) {
     printf("Test Vec3 : %f, %f, %f\n", (*testVec)[0], (*testVec)[1], (*testVec)[2]);
 
     /* Initialize objects */
-    int N_objs = 2; // number of objects
+    int N_objs = 3; // number of objects
     Object **objs;
     checkCudaErrors(cudaMalloc((void **)&objs, sizeof(Object *) * N_objs));
     addSphere<<<1,1>>>(objs); // TODO: make it flexibale
