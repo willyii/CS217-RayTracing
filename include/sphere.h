@@ -5,15 +5,15 @@
 
 class Sphere : public Object {
 public:
-  __device__ __host__ Sphere(vec3 c, double r, Shader **shader_list, int idx ) 
+  __device__  Sphere(vec3 c, double r, Shader **shader_list, int idx ) 
   : center(c), radius(r) { shader = shader_list[idx];}
-  __device__ __host__ virtual void Intersection(Ray &ray, Hit &hit) const;
-  __device__ __host__ virtual vec3 Norm(vec3 &point) const;
+  __device__  virtual void Intersection(Ray &ray, Hit &hit) const;
+  __device__  virtual vec3 Norm(vec3 &point) const;
   vec3 center;
   double radius;
 };
 
-__device__ __host__ void Sphere::Intersection(Ray &ray, Hit &hit) const {
+__device__  void Sphere::Intersection(Ray &ray, Hit &hit) const {
   vec3 oc = ray.endPoint - this->center;
   double a = dot(ray.direction, ray.direction);
   double b = dot(oc, ray.direction);
@@ -38,7 +38,7 @@ __device__ __host__ void Sphere::Intersection(Ray &ray, Hit &hit) const {
   return;
 }
 
-__device__ __host__ vec3 Sphere::Norm(vec3 &point) const {
+__device__  vec3 Sphere::Norm(vec3 &point) const {
   return (point- center).normalized();
 }
 

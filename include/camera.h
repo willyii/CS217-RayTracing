@@ -23,33 +23,33 @@ public:
   // Describes the pixels of the image
   ivec2 number_pixels; // number of pixels: x and y direction
 
-  __device__ __host__
+  __device__ 
   Camera(){};
 
   // Used for setting up camera parameters
-  __device__ __host__
+  __device__ 
   void Position_And_Aim_Camera(const vec3 &position_input,
                                const vec3 &look_at_point,
                                const vec3 &pseudo_up_vector);
 
-  __device__ __host__
+  __device__ 
   void Focus_Camera(double focal_distance, double aspect_ratio,
                     double field_of_view);
 
-  __device__ __host__
+  __device__ 
   void Set_Resolution(const int width, const int height);
 
   // Used for determining the where pixels are
-  __device__ __host__
+  __device__ 
   vec3 World_Position(const ivec2 pixel_index);
 
-  __device__ __host__
+  __device__ 
   vec2 Cell_Center(const ivec2 index) const {
     return min + (vec2(index) + vec2(.5, .5)) * pixel_size;
   }
 };
 
-__device__ __host__
+__device__ 
 void Camera::Position_And_Aim_Camera(const vec3 &position_input,
                                      const vec3 &look_at_point,
                                      const vec3 &pseudo_up_vector) {
@@ -59,7 +59,7 @@ void Camera::Position_And_Aim_Camera(const vec3 &position_input,
   vertical_vector = cross(horizontal_vector, look_vector).normalized();
 }
 
-__device__ __host__
+__device__ 
 void Camera::Set_Resolution(const int width, const int height) {
   number_pixels = ivec2(width, height);
   min = -0.5 * image_size;
@@ -68,7 +68,7 @@ void Camera::Set_Resolution(const int width, const int height) {
 }
 
 // Find the world position of the input pixel
-__device__ __host__
+__device__ 
 vec3 Camera::World_Position(const ivec2 pixel_index) {
   vec3 result;
   vec2 cell_center = Cell_Center(pixel_index);
@@ -78,7 +78,7 @@ vec3 Camera::World_Position(const ivec2 pixel_index) {
 }
 
 // Maybe use later
-__device__ __host__
+__device__ 
 void Camera::Focus_Camera(double focal_distance, double aspect_ratio,
                           double field_of_view) {
   film_position = position + look_vector * focal_distance;

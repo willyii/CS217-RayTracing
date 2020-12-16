@@ -6,12 +6,12 @@
 class Point_Light : public Light
 {
 public:
-    __device__ __host__
+    __device__ 
     Point_Light(const vec3& position,const vec3& color,double brightness)
         :Light(position,color,brightness)
     {}
 
-    __device__ __host__
+    __device__ 
     vec3 Emitted_Light(const vec3& vector_to_light) const
     {
         const double pi = 4 * std::atan(1.0);

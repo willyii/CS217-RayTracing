@@ -1,9 +1,26 @@
+#ifndef __KERNEL_H__
+#define __KERNEL_H__
+
 #include "sphere.h"
 #include "camera.h"
 #include "point_light.h"
 #include "world.h"
 #include "phong.h"
 #include "plane.h"
+
+// limited version of checkCudaErrors from helper_cuda.h in CUDA examples
+#define checkCudaErrors(val) check_cuda( (val), #val, __FILE__, __LINE__ )
+
+/* Check the error of cuda API */
+void check_cuda(cudaError_t result, char const *const func, const char *const file, int const line) {
+    if (result) {
+        std::cerr << "CUDA error = " << static_cast<unsigned int>(result) << " at " <<
+            file << ":" << line << " '" << func << "' \n";
+        // Make sure we call CUDA Device Reset before exiting
+        cudaDeviceReset();
+        exit(99);
+    }
+}
 
 
 template<class T>
@@ -31,12 +48,12 @@ void addPlane(Object **objs, int obj_idx, Shader **shaders, int shd_idx, vec3 x1
 
 /* Create Camera in GPU */
 __global__ 
-void creatCamera(Camera **camera, vec3 pos, vec3 look, vec3 up, int width, int height){
+void creatCamera(Camera **camera, vec3 pos, vec3 look, vec3 up, int width, int height, double phi){
     if (threadIdx.x == 0 && blockIdx.x == 0) {
         camera[0] = new Camera();
         const double pi = 4 * std::atan(1.0);
         camera[0]->Position_And_Aim_Camera(pos, look, up);
-        camera[0]->Focus_Camera(1.0, (double)width / height, 70.0 * (pi / 180));
+        camera[0]->Focus_Camera(1.0, (double)width / height, phi * (pi / 180));
         camera[0]->Set_Resolution(width, height);
     }
 }
@@ -113,3 +130,4 @@ void render(World **world,  ivec3 *colors, int width, int height){
     return;
 }
 
+#endif
