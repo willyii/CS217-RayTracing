@@ -8,6 +8,8 @@ struct Hit {
   double dist;
 };
 
+class Shader;
+
 class Object {
 public:
   __device__ __host__ Object(){};
@@ -15,6 +17,7 @@ public:
   __device__ __host__ virtual void Intersection(Ray &ray, Hit &hit) const = 0;
   __device__ __host__ virtual vec3 Norm(vec3 &point) const = 0;
 
+  Shader *shader;
   static const double small_t = 1e-4;
 };
 

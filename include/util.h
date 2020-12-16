@@ -14,7 +14,6 @@
  * data: ivec3, save color for each pixel, row major
  */
 void Dump_png(ivec3 *data, int width, int height, const char *filename) {
-  int strange_count = 0; // DEBUG
   std::ofstream WriteFile;
   ivec3 current;
   WriteFile.open(filename, std::ios::trunc);

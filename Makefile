@@ -12,7 +12,7 @@ default: $(EXE)
 $(EXE): $(OBJ)
 	$(NVCC) $(OBJ) -o $(EXE) 
 
-main.o: $(SRC_DIR)/main.cu
+main.o: $(SRC_DIR)/main.cu $(KER_DIR)/kernel.h
 	$(NVCC) -c -o $@ $(SRC_DIR)/main.cu $(NVCC_FLAGS)
 
 clean:

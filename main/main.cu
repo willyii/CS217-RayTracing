@@ -24,13 +24,8 @@ int main(int argc, char *argv[]) {
     clock_t start, end;
     start = clock();
 
-    /*  Debug thing */
-    vec3 *testVec;
-    checkCudaErrors(cudaMallocManaged((void **)&testVec, sizeof(vec3)));
-    checkCudaErrors(cudaDeviceSynchronize());
-
-    int width   = 4096;
-    int height  = 2160;
+    int width   = 1920;
+    int height  = 1080;
     /* Camera parameter   */
     vec3 pos    = vec3(0.0, 1.0, 6.0);
     vec3 look   = vec3(0.0, 0.0, 0.0);
@@ -43,33 +38,35 @@ int main(int argc, char *argv[]) {
     checkCudaErrors(cudaDeviceSynchronize());
 
     /* Initialize Light Sources */
-    int N_light = 2;
+    int N_light = 3;
     Light **lights;
     checkCudaErrors(cudaMalloc((void **)&lights, sizeof(Light *) * N_light));
-    createLight<<<1,1>>>(lights, 0, vec3(0,5,6), vec3(1,1,1), 200, testVec); // TODO: parse from file 
-    createLight<<<1,1>>>(lights, 1, vec3(-4,2,6), vec3(1,1,1), 200, testVec); // TODO: parse from file 
-    // createLight<<<1,1>>>(lights, 2, vec3(0,-3,6), vec3(0,1,0), 10, testVec); // TODO: parse from file 
-    printf("Test Vec3 : %f, %f, %f\n", (*testVec)[0], (*testVec)[1], (*testVec)[2]);
+    createLight<<<1,1>>>(lights, 0, vec3(0,5,6), vec3(1,1,1), 400); // TODO: parse from file 
+    createLight<<<1,1>>>(lights, 1, vec3(-4,2,6), vec3(1,1,1), 400); // TODO: parse from file 
+    createLight<<<1,1>>>(lights, 2, vec3(0,-3,6), vec3(0,1,0), 10); // TODO: parse from file 
+
+    /* Initialize Shader */
+    int N_shader = 3;
+    Shader **shaders;
+    checkCudaErrors(cudaMalloc((void **)&shaders, sizeof(Shader *) * N_shader));
+    createShader<<<1,1>>>(shaders,0, vec3(1,0,0), vec3(1,0,0),vec3(1,1,1), 50);
+    createShader<<<1,1>>>(shaders,1, vec3(0,0,1), vec3(0,0,1),vec3(1,1,1), 50);
+    createShader<<<1,1>>>(shaders,2, vec3(.5,.5,.5), vec3(.5,.5,.5),vec3(1,1,1), 50);
+
 
     /* Initialize objects */
     int N_objs = 3; // number of objects
     Object **objs;
     checkCudaErrors(cudaMalloc((void **)&objs, sizeof(Object *) * N_objs));
-    addSphere<<<1,1>>>(objs); // TODO: make it flexibale
+    addSphere<<<1,1>>>(objs, 0, shaders, 0, vec3(1,0,0), 0.5); 
+    addSphere<<<1,1>>>(objs, 1, shaders, 1, vec3(0,0,1), 0.5); 
+    addPlane<<<1,1>>>(objs, 2, shaders, 2, vec3(0,-2,0), vec3(0,1,0)); 
     checkCudaErrors(cudaDeviceSynchronize());
 
     /* Initialize world */
     World **world;
     checkCudaErrors(cudaMalloc((void **)&world, sizeof(World *)));
-    createWorld<<<1,1>>>(world, camera, objs,N_objs, lights, N_light, vec3(0,0,0), 0, testVec );
-    printf("Test Vec3 : %f, %f, %f\n", (*testVec)[0], (*testVec)[1], (*testVec)[2]);
-
-
-    /* Initialize Shader */
-    Shader **shader;
-    checkCudaErrors(cudaMalloc((void **)&shader, sizeof(Shader *)));
-    createShader<<<1,1>>>(shader, vec3(1,0,0), vec3(1,0,0),vec3(1,1,1), 50, testVec );
-    printf("Test Vec3 : %f, %f, %f\n", (*testVec)[0], (*testVec)[1], (*testVec)[2]);
+    createWorld<<<1,1>>>(world, camera, objs, N_objs, lights, N_light, vec3(0,0,0), 0 );
 
     /* Initialize imgs */
     ivec3 *colors;
@@ -81,7 +78,7 @@ int main(int argc, char *argv[]) {
     int ty = 8;
     dim3 blocks(width/tx+1, height/ty +1);
     dim3 threads(tx, ty);
-    render<<<blocks, threads>>>(shader, world, colors, width, height,testVec);
+    render<<<blocks, threads>>>(world, colors, width, height);
     checkCudaErrors(cudaDeviceSynchronize());
     end = clock();
 
@@ -89,11 +86,16 @@ int main(int argc, char *argv[]) {
 
     // Save img
     Dump_png(colors, width, height, "./result/test.png");
-    
-    /* Print debug info */
-    printf("Color of first pixel: %d, %d, %d\n", colors[0][0], colors[0][1], colors[0][2]);
-    printf("Test Vec3 : %f, %f, %f\n", (*testVec)[0], (*testVec)[1], (*testVec)[2]);
 
 
-  return 0;
+    // freeWorld<<<1,1>>>(shaders, N_shader, objs, N_objs, lights, N_light, world);
+    checkCudaErrors(cudaFree(shaders));
+    checkCudaErrors(cudaFree(objs));
+    checkCudaErrors(cudaFree(lights));
+    checkCudaErrors(cudaFree(world));
+    checkCudaErrors(cudaFree(colors));
+    checkCudaErrors(cudaDeviceSynchronize());
+    cudaDeviceReset();
+
+    return 0;
 }
