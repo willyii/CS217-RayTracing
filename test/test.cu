@@ -26,8 +26,8 @@ int main(int argc, char *argv[]) {
     checkCudaErrors(cudaMallocManaged((void **)&testVec, sizeof(vec3)));
     checkCudaErrors(cudaDeviceSynchronize());
 
-    int width   = 640;
-    int height  = 480;
+    int width   = 1920;
+    int height  = 1080;
     /* Camera parameter   */
     vec3 pos    = vec3(0.0, 1.0, 6.0);
     vec3 look   = vec3(0.0, 0.0, 0.0);
@@ -58,7 +58,7 @@ int main(int argc, char *argv[]) {
     /* Initialize world */
     World **world;
     checkCudaErrors(cudaMalloc((void **)&world, sizeof(World *)));
-    createWorld<<<1,1>>>(world, camera, objs,N_objs, lights, N_light, vec3(0,0,0), vec3(1,1,1),1, testVec );
+    createWorld<<<1,1>>>(world, camera, objs,N_objs, lights, N_light, vec3(0,0,0), 0, testVec );
     printf("Test Vec3 : %f, %f, %f\n", (*testVec)[0], (*testVec)[1], (*testVec)[2]);
 
 

@@ -52,7 +52,7 @@ Shade_Surface(const Ray ray,const vec3 intersection_point,
 
         Hit result = {NULL, __DBL_MAX__};
         (*world)->Closest_Intersection(light, result);     
-        if(result.dist>distance_to_light)
+        if(result.dist>distance_to_light )
         {
             diffuse += color_diffuse * (*world)->light_list[i]->Emitted_Light(vector_to_light) * nl;
             specular += color_specular * (*world)->light_list[i]->Emitted_Light(vector_to_light)* pow(rv,specular_power);       

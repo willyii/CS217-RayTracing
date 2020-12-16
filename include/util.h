@@ -6,6 +6,7 @@
 #include <cassert>
 #include <fstream>
 #include <iostream>
+#include <stdio.h>
 
 /**
  * Save image to file.
@@ -13,6 +14,7 @@
  * data: ivec3, save color for each pixel, row major
  */
 void Dump_png(ivec3 *data, int width, int height, const char *filename) {
+  int strange_count = 0; // DEBUG
   std::ofstream WriteFile;
   ivec3 current;
   WriteFile.open(filename, std::ios::trunc);
@@ -22,8 +24,14 @@ void Dump_png(ivec3 *data, int width, int height, const char *filename) {
       current = data[j * width + i];
       WriteFile << current[0]<< " " << current[1] << " "
                 << current[2] << "\n";
+
+      if(current[0] > 255 || current[1] > 255 || current[2] > 255){
+        printf("DEBUG: %d, %d, %d, at: %d, %d\n", current[0], current[1], current[2], j, i);
+        strange_count++;
+      }
     }
   }
+  printf("DEGBUG: strange count: %d\n", strange_count);
   WriteFile.close();
   return;
 }

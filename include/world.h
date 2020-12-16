@@ -10,7 +10,7 @@ class World {
 public:
 
   __device__
-  World(Camera **camera, Object **objs, int N_objs, Light **lights, int N_lights, vec3 back, vec3 ambient, int intense);
+  World(Camera **camera, Object **objs, int N_objs, Light **lights, int N_lights, vec3 ambient, int intense);
 
   __device__
   ~World();
@@ -21,7 +21,6 @@ public:
   Camera **camera;
   Object **object_list;
   Light  **light_list;
-  vec3 background_color;
   vec3 ambient_color;
   double ambient_intensity;
   int num_objs;
@@ -30,8 +29,8 @@ public:
 };
 
 __device__
-World::World(Camera **camera, Object **objs, int N_objs, Light **lights, int N_lights,vec3 back, vec3 ambient, int intense)
-: camera(camera), object_list(objs), num_objs(N_objs), background_color(back), 
+World::World(Camera **camera, Object **objs, int N_objs, Light **lights, int N_lights, vec3 ambient, int intense)
+: camera(camera), object_list(objs), num_objs(N_objs),
   ambient_color(ambient), ambient_intensity(intense), light_list(lights), num_lights(N_lights)
   {}
 

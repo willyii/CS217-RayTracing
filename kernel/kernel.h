@@ -4,6 +4,8 @@
 #include "world.h"
 #include "phong.h"
 
+
+
 /* Add Spheres */
 __global__ 
 void addSphere(Object **objs){
@@ -37,9 +39,9 @@ void createLight(Light **lights, int idx, vec3 pos, vec3 color, double brightnes
 /* Create World in GPU */
 __global__ 
 void createWorld(World **world, Camera **camera, Object **objs, int N_objs, Light **lights, int N_lights,
-                 vec3 back, vec3 ambient, int intense, vec3 *testVec){
+                vec3 ambient, int intense, vec3 *testVec){
     if (threadIdx.x == 0 && blockIdx.x == 0) {
-        *(world) = new World(camera, objs, N_objs, lights, N_lights, back, ambient, 1);
+        *(world) = new World(camera, objs, N_objs, lights, N_lights, ambient, 1);
         *testVec  = world[0]->object_list[0]->color;
     }
 }
@@ -52,14 +54,19 @@ void createShader(Shader **shader, vec3 ambient, vec3 diff, vec3 specular, doubl
     }
 }
 
+template<class T>
+__device__
+T min(T v1, T v2){
+    if(v1 < v2) return v1;
+    return v2;
+}
 
 /* Convert color vector from double to int */
 __device__ 
 void vecToColor(ivec3 *color, int idx , vec3 &dcolor){
-    color[idx][0] = 255 * dcolor[0];
-    color[idx][1] = 255 * dcolor[1];
-    color[idx][2] = 255 * dcolor[2];
-    return;
+    color[idx][0] = int(255* min(1.0,dcolor[0]));
+    color[idx][1] = int(255* min(1.0,dcolor[1]));
+    color[idx][2] = int(255* min(1.0,dcolor[2]));
 }
 
 /* Render */
@@ -79,10 +86,10 @@ void render(Shader **shader, World **world,  ivec3 *colors, int width, int heigh
 
     /* Cast Ray and Set color */
     (*world)->Closest_Intersection(ray, result);
-    if(result.dist < __DBL_MAX__){ // hit something
+    if(result.dist < __DBL_MAX__ && result.dist >= 1e-4){ // hit something
         vec3 point = ray.point(result.dist);
         dcolor = (*shader)->Shade_Surface(ray, point, result.object->Norm(point), world );
-        if(i == 320 && j == 240) (*testVec) = dcolor;
+        if(i == 309 && j == 196) (*testVec) = dcolor;
     }
     else{
         // vec3 unit_direct = ray.direction;
