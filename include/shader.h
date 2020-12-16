@@ -20,6 +20,6 @@ public:
     {}
 
     virtual vec3 Shade_Surface(const Ray& ray,const vec3& intersection_point,
-        const vec3& normal,int recursion_depth) const=0;
+        const vec3& normal) const=0;
 };
 #endif

@@ -6,7 +6,7 @@
 class Sphere : public Object {
 public:
   Sphere(){};
-  Sphere(vec3 c, double r, vec3 clr) : center(c), radius(r) { color = clr; }
+  Sphere(vec3 c, double r) : center(c), radius(r) {}
   virtual Hit Intersection(const Ray &ray) const;
   virtual vec3 Normal(const vec3& point) const;
   vec3 center;
@@ -23,7 +23,7 @@ Hit Sphere::Intersection(const Ray &ray) const {
   if (discriminant >= 0) {
     /* Small root */
     double tmp = (-b - sqrt(discriminant)) / a;
-    if (tmp > 0) {
+    if (tmp > small_t) {
       ret.object = this;
       ret.dist = tmp;
       ret.normal = (ray.point(tmp) - center) / radius;
@@ -31,7 +31,7 @@ Hit Sphere::Intersection(const Ray &ray) const {
     }
     /* Large root */
     tmp = (-b + sqrt(discriminant)) / a;
-    if (tmp > 0) {
+    if (tmp > small_t) {
       ret.object = this;
       ret.dist = tmp;
       ret.normal = (ray.point(tmp) - center) / radius;

@@ -17,7 +17,6 @@ public:
   ~World();
 
   Camera camera;
-  Shader *background_shader;
   std::vector<Object *> object_list;
   std::vector<Light *> lights;
   vec3 background_color;
@@ -25,22 +24,18 @@ public:
   double ambient_intensity;
 
   bool enable_shadows;
-  int recursion_depth_limits;
   void Render();
 
   void RenderSinglePixel(const ivec2 &index);
   Hit Closest_Intersection(const Ray &ray);
-  vec3 CastRay(const Ray &ray,int recursion_depth);
+  vec3 CastRay(const Ray &ray);
 };
 
 World::World() 
-  : background_color(0),ambient_intensity(0),enable_shadows(true),
-  recursion_depth_limits(3)
+  : background_color(0),ambient_intensity(0),enable_shadows(true)
   {}
 
 World::~World() {
-  
-  delete background_shader;
   for (size_t i = 0; i < object_list.size(); i++) delete object_list[i];
   for (size_t i = 0; i < lights.size(); i++) delete lights[i];
 }
@@ -57,8 +52,7 @@ void World::RenderSinglePixel(const ivec2 &index) {
   vec3 direction = camera.World_Position(index) - endpoint;
   Ray ray = Ray(endpoint, direction);
 
-  vec3 color = CastRay(ray,3);
-
+  vec3 color = CastRay(ray);
   camera.Set_Pixel(index, Pixel_Color(color));
   return;
 }
@@ -76,11 +70,11 @@ Hit World::Closest_Intersection(const Ray &ray)
   }
   return closest;
 }
-vec3 World::CastRay(const Ray &ray,int recursion_depth) {
+vec3 World::CastRay(const Ray &ray) {
   // std::cout << "Current ray start from " << ray.endPoint << " to "
   //          << ray.direction << std::endl;
   vec3 color = background_color;
-  Hit closest=Closest_Intersection(ray);
+  Hit closest= Closest_Intersection(ray);
   vec3 point;
   vec3 normal;
   
@@ -88,7 +82,7 @@ vec3 World::CastRay(const Ray &ray,int recursion_depth) {
   {
     point=ray.point(closest.dist);
     normal=closest.object->Normal(point);
-    color=closest.object->material_shader->Shade_Surface(ray,point,normal,recursion_depth);
+    color=closest.object->material_shader->Shade_Surface(ray,point,normal);
   }
   else color=background_color;
   return color;

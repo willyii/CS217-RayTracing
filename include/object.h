@@ -6,6 +6,7 @@
 class Shader;
 class Object;
 
+static const double small_t = 1e-4;
 
 struct Hit {
   const Object *object;
@@ -21,7 +22,7 @@ public:
   virtual Hit Intersection(const Ray &ray) const = 0;
   virtual vec3 Normal(const vec3& point) const=0;
   
-  vec3 color;
+ 
   
 };
 
