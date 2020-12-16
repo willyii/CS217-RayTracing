@@ -29,6 +29,9 @@ Update camera.h and ray.h
 ## 11.15.2020
 Finished basic ray tracing program. See usage 
 
+## 12.15 2020
+Finished CPU_Version with Phong_Shader
+
 ## Reference 
 https://in1weekend.blogspot.com/2016/01/ray-tracing-in-one-weekend.html
 
