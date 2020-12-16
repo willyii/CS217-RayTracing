@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 INC_DIR 	= include
 KER_DIR		= kernel
 SRC_DIR		= main
@@ -33,11 +31,7 @@ $(OBJ2): $(SRC_DIR)/scene2.cu $(KER_DIR)/kernel.h
 
 $(OBJ3): $(SRC_DIR)/scene3.cu $(KER_DIR)/kernel.h
 	$(NVCC) -c -o $@ $(SRC_DIR)/scene3.cu $(NVCC_FLAGS)
->>>>>>> cuda
-# The main clean target
+
 clean:
-<<<<<<< HEAD
-=======
 	rm -rf *.o $(EXE1) $(EXE2) $(EXE3)
 	rm -rf result/*
->>>>>>> cuda
