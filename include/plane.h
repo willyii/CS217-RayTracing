@@ -9,9 +9,9 @@ public:
     vec3 x1;
     vec3 normal;
 
-    Plane(const vec3& point,const vec3& normal)
+    Plane(const vec3& point,const vec3& normal, Shader *shader)
         :x1(point),normal(normal.normalized())
-    {}
+    { material_shader = shader;}
 
     virtual Hit Intersection(const Ray& ray) const override;
     virtual vec3 Normal(const vec3& point) const override;

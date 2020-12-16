@@ -10,8 +10,11 @@ include_directories("include")
 #file(GLOB LIB_SOURCES src/*.cpp)
 #file(GLOB LIB_HEADERS include/*.h)
 #add_library(RTLIB ${LIB_SOURCES} ${LIB_HEADERS})
-add_executable(RayTracing main/main.cpp)
 
-add_executable(TestRT test/test.cpp)
+add_executable(scene1 main/scene1.cpp)
+add_executable(scene2 main/scene2.cpp)
+add_executable(scene3 main/scene3.cpp)
+
+# add_executable(TestRT test/test.cpp)
 
 set(CMAKE_CXX_STANDARD_REQUIRED YES)

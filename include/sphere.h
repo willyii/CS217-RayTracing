@@ -6,7 +6,7 @@
 class Sphere : public Object {
 public:
   Sphere(){};
-  Sphere(vec3 c, double r) : center(c), radius(r) {}
+  Sphere(vec3 c, double r, Shader *shader) : center(c), radius(r) { material_shader = shader;}
   virtual Hit Intersection(const Ray &ray) const;
   virtual vec3 Normal(const vec3& point) const;
   vec3 center;
