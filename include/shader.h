@@ -1,25 +1,29 @@
 #ifndef __SHADER_H__
 #define __SHADER_H__
 
-#include "vec.h"
-class World;
-class Ray;
-
-extern bool debug_pixel;
+<<<<<<< HEAD
+=======
+#include "ray.h"
+#include "world.h"
+>>>>>>> cuda
 
 class Shader
 {
 public:
-    World& world;
-
-    Shader(World& world_input)
-        :world(world_input)
+<<<<<<< HEAD
+=======
+    __device__ 
+    Shader()
     {}
 
+    __device__ 
     virtual ~Shader()
     {}
 
-    virtual vec3 Shade_Surface(const Ray& ray,const vec3& intersection_point,
-        const vec3& normal) const=0;
+    __device__ 
+    virtual vec3 Shade_Surface(const Ray ray,const vec3 intersection_point,
+        const vec3 normal, World **world) const=0;
+
 };
 #endif
+>>>>>>> cuda

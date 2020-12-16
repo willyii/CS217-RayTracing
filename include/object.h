@@ -3,27 +3,29 @@
 
 #include "ray.h"
 
-class Shader;
-class Object;
+<<<<<<< HEAD
 
-static const double small_t = 1e-4;
-
+=======
+>>>>>>> cuda
 struct Hit {
   const Object *object;
   double dist;
-  vec3 normal;
 };
+
+class Shader;
 
 class Object {
 public:
-  Shader* material_shader;
-  Object():material_shader(0){};
-  virtual ~Object(){};
-  virtual Hit Intersection(const Ray &ray) const = 0;
-  virtual vec3 Normal(const vec3& point) const=0;
-  
- 
-  
+<<<<<<< HEAD
+=======
+  __device__  Object(){};
+  __device__  ~Object(){};
+  __device__  virtual void Intersection(Ray &ray, Hit &hit) const = 0;
+  __device__  virtual vec3 Norm(vec3 &point) const = 0;
+
+  Shader *shader;
+  static const double small_t = 1e-4;
+>>>>>>> cuda
 };
 
 #endif

@@ -5,16 +5,18 @@
 
 class Sphere : public Object {
 public:
-  Sphere(){};
-  Sphere(vec3 c, double r, Shader *shader) : center(c), radius(r) { material_shader = shader;}
-  virtual Hit Intersection(const Ray &ray) const;
-  virtual vec3 Normal(const vec3& point) const;
+<<<<<<< HEAD
+=======
+  __device__  Sphere(vec3 c, double r, Shader **shader_list, int idx ) 
+  : center(c), radius(r) { shader = shader_list[idx];}
+  __device__  virtual void Intersection(Ray &ray, Hit &hit) const;
+  __device__  virtual vec3 Norm(vec3 &point) const;
+>>>>>>> cuda
   vec3 center;
   double radius;
 };
 
-Hit Sphere::Intersection(const Ray &ray) const {
-  Hit ret = {this, __DBL_MAX__, vec3(0.0, 0.0, 0.0)};
+__device__  void Sphere::Intersection(Ray &ray, Hit &hit) const {
   vec3 oc = ray.endPoint - this->center;
   double a = dot(ray.direction, ray.direction);
   double b = dot(oc, ray.direction);
@@ -22,30 +24,32 @@ Hit Sphere::Intersection(const Ray &ray) const {
   double discriminant = b * b - a * c;
   if (discriminant >= 0) {
     /* Small root */
-    double tmp = (-b - sqrt(discriminant)) / a;
-    if (tmp > small_t) {
-      ret.object = this;
-      ret.dist = tmp;
-      ret.normal = (ray.point(tmp) - center) / radius;
-      return ret;
+<<<<<<< HEAD
+=======
+    double d = (-b - sqrt(discriminant)) / a;
+    if (d > small_t && d< hit.dist) {
+      hit.object = this;
+      hit.dist   = d;
+      return;
     }
     /* Large root */
-    tmp = (-b + sqrt(discriminant)) / a;
-    if (tmp > small_t) {
-      ret.object = this;
-      ret.dist = tmp;
-      ret.normal = (ray.point(tmp) - center) / radius;
-      return ret;
+    d = (-b + sqrt(discriminant)) / a;
+    if (d > small_t && d< hit.dist) {
+      hit.object = this;
+      hit.dist   = d;
+      return;
+>>>>>>> cuda
     }
   }
-  return ret;
+  return;
 }
 
-vec3 Sphere::Normal(const vec3& point) const
-{
-  vec3 normal;
-  normal=point-center;
-  return normal.normalized();
+<<<<<<< HEAD
+=======
+__device__  vec3 Sphere::Norm(vec3 &point) const {
+  return (point- center).normalized();
 }
 
+
+>>>>>>> cuda
 #endif
