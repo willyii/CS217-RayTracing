@@ -58,8 +58,6 @@ int main(int argc, char *argv[]) {
     checkCudaErrors(cudaDeviceSynchronize());
 
     /* Render            */
-    int tx = 8;
-    int ty = 8;
     dim3 blocks(width/tx+1, height/ty +1);
     dim3 threads(tx, ty);
     render<<<blocks, threads>>>(world, colors, width, height);

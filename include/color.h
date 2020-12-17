@@ -9,6 +9,8 @@ vec3 blue(.2,.2,.8);
 vec3 gray(.5,.5,.5);
 vec3 magenta(1,0,1);
 
-int width   = 1920;
-int height  = 1080;
+int width   = 2560;
+int height  = 1440;
+int tx      = 32;
+int ty      = 32;
 #endif
