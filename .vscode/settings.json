@@ -1,5 +1,7 @@
 {
     "files.associations": {
+<<<<<<< HEAD
+=======
         "array": "cpp",
         "*.tcc": "cpp",
         "cctype": "cpp",
@@ -33,5 +35,6 @@
         "utility": "cpp",
         "typeinfo": "cpp",
         "random": "cpp"
+>>>>>>> cuda
     }
 }

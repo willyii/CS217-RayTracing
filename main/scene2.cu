@@ -10,8 +10,6 @@ int main(int argc, char *argv[]) {
     clock_t start, end;
     start = clock();
 
-    int width   = 1920;
-    int height  = 1080;
     /* Camera parameter   */
     vec3 pos    = vec3(0.0, 1.0, 6.0);
     vec3 look   = vec3(0.0, 0.0, 0.0);
@@ -63,8 +61,6 @@ int main(int argc, char *argv[]) {
     checkCudaErrors(cudaDeviceSynchronize());
 
     /* Render            */
-    int tx = 8;
-    int ty = 8;
     dim3 blocks(width/tx+1, height/ty +1);
     dim3 threads(tx, ty);
     render<<<blocks, threads>>>(world, colors, width, height);

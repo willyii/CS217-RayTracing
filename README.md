@@ -1,5 +1,8 @@
 # CS217-RayTracing
-Project for CS217 GPU architecture. A basic cuda version raytracing program
+
+Project for CS217 GPU architecture. This branch is GPU Version.
+
+We implemented a basic ray tracing program, which include basic objects and light sources. It also support phong shader. Running much faster than the CPU Version.
 
 ## How to run
 
@@ -9,17 +12,17 @@ make clean
 make
 ```
 
-After compile, you will have one executable **rayTracing**. Using this command to 
-run the test program:
+After compile, you will have three executables **scene1**, **scene2** and **scene3**. 
+
+Using this command to run the programs:
 ```bash
-./rayTracing
+./scene1
+./scene2
+./scene3
 ```
 
-This program will add new file named "test.png" in **result** fold.
+Then you can see the result images in result fold.
 
-## TODO
-- Shader function
-- Parse function 
 
 ## Reference 
 https://in1weekend.blogspot.com/2016/01/ray-tracing-in-one-weekend.html
