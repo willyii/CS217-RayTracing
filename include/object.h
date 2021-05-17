@@ -18,7 +18,7 @@ public:
   __device__ virtual vec3 Norm(vec3 &point) const = 0;
 
   Shader *shader;
-  double small_t = 1e-4;
+  const double small_t = 1e-4;
 };
 
 #endif
